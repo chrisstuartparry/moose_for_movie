@@ -3,6 +3,7 @@
 #include "AppFactory.h"
 #include "ModulesApp.h"
 #include "MooseSyntax.h"
+#include "HeatConduction.h"
 
 InputParameters
 MooseForMovieApp::validParams()
@@ -19,7 +20,7 @@ MooseForMovieApp::MooseForMovieApp(InputParameters parameters) : MooseApp(parame
 
 MooseForMovieApp::~MooseForMovieApp() {}
 
-void 
+void
 MooseForMovieApp::registerAll(Factory & f, ActionFactory & af, Syntax & s)
 {
   ModulesApp::registerAllObjects<MooseForMovieApp>(f, af, s);
