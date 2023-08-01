@@ -3,7 +3,7 @@
 #include "AppFactory.h"
 #include "ModulesApp.h"
 #include "MooseSyntax.h"
-#include "HeatConduction.h"
+// #include "HeatConduction.h"
 
 InputParameters
 MooseForMovieApp::validParams()

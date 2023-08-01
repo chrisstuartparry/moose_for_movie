@@ -50,6 +50,7 @@ STOCHASTIC_TOOLS            := no
 THERMAL_HYDRAULICS          := no
 TENSOR_MECHANICS            := no
 XFEM                        := no
+SOLID_PROPERTIES            := yes
 
 include $(MOOSE_DIR)/modules/modules.mk
 ###############################################################################
