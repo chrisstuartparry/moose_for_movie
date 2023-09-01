@@ -1,5 +1,5 @@
 [Mesh]
-  file = movie_attempt_fewer_elements_2.e
+  file = movie_attempt_fewer_elements_3.e
   # construct_side_list_from_node_list = true
 []
 
@@ -13,23 +13,24 @@
   [heat_conduction]
     type = ADHeatConduction
     variable = temperature
-    block = 'plasma_chamber first_wall_volume outer_walls_volume'
+    block = 'plasma_chamber plasma_chamber_wall_volume first_wall_volume outer_walls_volume'
   []
   [time_derivative]
     type = ADHeatConductionTimeDerivative
     variable = temperature
-    block = 'plasma_chamber first_wall_volume outer_walls_volume'
+    block = 'plasma_chamber plasma_chamber_wall_volume first_wall_volume outer_walls_volume'
   []
   [heat_source]
     type = ADMatHeatSource
     variable = temperature
-    scalar = 1.0
-    block = 'plasma_chamber'
+    material_property = 'volumetric_heat'
+    block = 'plasma_chamber_wall_volume'
   []
   # [heat_source]
   #   type = HeatSource
   #   variable = temperature
-  #   function = 'sin(2 * pi * t) * exp(0.001 * x) * exp(0.001 * y)'
+  #   function = 1000
+  #   block = 'plasma_chamber'
   # []
 []
 
@@ -37,17 +38,24 @@
   [initial_temperature]
     type = ConstantIC
     variable = temperature
-    block = 'plasma_chamber first_wall_volume outer_walls_volume'
+    block = 'plasma_chamber plasma_chamber_wall_volume first_wall_volume outer_walls_volume'
     value = '300'
   []
 []
 
 [BCs]
   # [inner]
-  #   type = DirichletBC
+  #   type = FunctionDirichletBC
   #   variable = temperature
   #   boundary = 'plasma_chamber_wall'
-  #   value = 5000
+  #   function = '10*t + 300'
+  #   # value = 1000
+  # []
+  # [inner]
+  #   type = NeumannBC
+  #   variable = temperature
+  #   boundary = 'plasma_chamber_wall'
+  #   value = 10000
   # []
   [outer]
     type = DirichletBC
@@ -68,6 +76,12 @@
 []
 
 [Materials]
+  [constant_heat_source]
+    type = ADGenericConstantMaterial
+    prop_names = 'volumetric_heat'
+    prop_values = '100000'
+    block = 'plasma_chamber_wall_volume'
+  []
   [air]
     type = ADGenericConstantMaterial
     prop_names = 'thermal_conductivity specific_heat density'
@@ -78,13 +92,13 @@
     type = ADThermalSolidPropertiesMaterial
     temperature = temperature
     sp = sp_graphite
-    block = 'first_wall_volume'
+    block = 'plasma_chamber_wall_volume'
   []
   [steel]
     type = ADThermalSolidPropertiesMaterial
     temperature = temperature
     sp = sp_316
-    block = 'outer_walls_volume'
+    block = 'first_wall_volume outer_walls_volume'
   []
 []
 
@@ -107,7 +121,7 @@
   nl_max_its = 10
 
   dt = 1
-  num_steps = 10
+  num_steps = 50
 []
 
 [Outputs]

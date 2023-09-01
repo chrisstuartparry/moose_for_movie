@@ -5,7 +5,7 @@
 
 [Variables]
   [T]
-    initial_condition = 500
+    initial_condition = 773.15
 
   []
 []
